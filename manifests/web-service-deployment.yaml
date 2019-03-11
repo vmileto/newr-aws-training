@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web-service
+  name: web-service
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web-service
+    spec:
+      containers:
+      - env:
+        - name: REACT_APP_MOVIES_SERVICE_URL
+          value: localhost:3004
+        - name: REACT_APP_USERS_SERVICE_URL
+          value: localhost:3002
+        image: thywoof/web-service:latest
+        name: web-service
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,81 @@
+#
+# REQUIRED environment variables
+#
+# - YOUR_GITHUB_USER
+# - YOUR_USERS_SERVICE_URL
+# - YOUR_MOVIES_SERVICE_URL
+#
+version: '3'
+
+services:
+
+  users-db:
+    image: ${YOUR_GITHUB_USER}/users-db:latest
+    container_name: users-db
+    build: ./services/users/src/db
+    ports:
+      - '4002:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  movies-db:
+    image: ${YOUR_GITHUB_USER}/movies-db:latest
+    container_name: movies-db
+    build: ./services/movies/src/db
+    ports:
+      - '4004:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  users-service:
+    image: ${YOUR_GITHUB_USER}/users-service:latest
+    container_name: users-service
+    build: ./services/users/
+    ports:
+      - '3002:3000'
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users
+      - TOKEN_SECRET=Zed-Is-Dead-Baby-Zed-Is-Dead
+      - NEW_RELIC_APP_NAME=users-service
+      - NEW_RELIC_LICENSE_KEY=${YOUR_LICENSE_KEY}
+    depends_on:
+      - users-db
+    links:
+      - users-db
+
+  movies-service:
+    image: ${YOUR_GITHUB_USER}/movies-service:latest
+    container_name: movies-service
+    build: ./services/movies/
+    ports:
+      - '3004:3000'
+    environment:
+      - USERS_SERVICE_URL=${YOUR_USERS_SERVICE_URL}
+      - DATABASE_URL=postgres://postgres:postgres@movies-db:5432/movies
+      - TOKEN_SECRET=Zed-Is-Dead-Baby-Zed-Is-Dead
+      - NEW_RELIC_APP_NAME=movies-service
+      - NEW_RELIC_LICENSE_KEY=${YOUR_LICENSE_KEY}
+    depends_on:
+      - movies-db
+      - users-service
+    links:
+      - movies-db
+      - users-service
+
+  web-service:
+    image: ${YOUR_GITHUB_USER}/web-service:latest
+    container_name: web-service
+    build: ./services/web/
+    ports:
+      - '4000:3000'
+    environment:
+      - REACT_APP_USERS_SERVICE_URL=${YOUR_USERS_SERVICE_URL}
+      - REACT_APP_MOVIES_SERVICE_URL=${YOUR_MOVIES_SERVICE_URL}
+    depends_on:
+      - users-service
+      - movies-service
+    links:
+      - users-service
+      - movies-service
