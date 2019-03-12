@@ -69,11 +69,6 @@ sudo yum install git docker-io -y
 sudo service docker start
 sudo usermod -aG docker ec2-user
 
-# LOGOUT/LOGIN FOR GROUP CHANGE TO TAKE EFFECT
-
-. ~/.globals && env | grep YOUR
-sudo docker login
-
 # create an SSH key
 
 rm -f /home/ec2-user/.ssh/id_rsa
@@ -135,7 +130,7 @@ docker-compose build
 # bring the services up
 
 printf "\n\n\nWEB SERVICE URL:\n\n\n${YOUR_WEB_SERVICE_URL}\n\n\n"
-docker-compose up
+docker-compose up -d
 
 #
 # PART 3 - APM INSTRUMENTATION - OPEN PROJECT ON ATOM EDITOR
@@ -150,6 +145,7 @@ docker volumes prune
 
 # pull repository changes, build and push image to DockerHub
 
+docker login
 cd ~/newr-aws-training && git pull
 docker-compose build
 docker-compose push
@@ -157,6 +153,10 @@ docker-compose push
 #
 # PART 4 - DEPLOY A MICROSERVICES APP ON EKS
 #
+
+# restage our globals
+
+. ~/.globals && env | grep YOUR
 
 # deploy both databases
 
