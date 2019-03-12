@@ -13,8 +13,8 @@ services:
     image: ${YOUR_GITHUB_USER}/users-db:latest
     container_name: users-db
     build: ./services/users/src/db
-    ports:
-      - '4002:5432'
+#    ports:
+#      - '4002:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -23,8 +23,8 @@ services:
     image: ${YOUR_GITHUB_USER}/movies-db:latest
     container_name: movies-db
     build: ./services/movies/src/db
-    ports:
-      - '4004:5432'
+#    ports:
+#      - '4004:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
