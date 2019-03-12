@@ -1,4 +1,3 @@
-//const newrelic = require('newrelic');
 const express = require('express');
 const localAuth = require('../auth/local');
 const authHelpers = require('../auth/_helpers');
@@ -11,7 +10,6 @@ router.get('/ping', (req, res) => {
 
 router.post('/register', (req, res) => {
   const username = req.body.username;
-  //newrelic.addCustomAttribute('ar_username', username);
   return authHelpers.createUser(req, res)
   .then((user) => { return localAuth.encodeToken(user[0]); })
   .then((token) => {
@@ -30,7 +28,6 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  //newrelic.addCustomAttribute('ar_username', username);
   return authHelpers.getUser(username)
   .then((response) => {
     if (!authHelpers.comparePass(password, response.password)) {
@@ -56,7 +53,6 @@ router.post('/login', (req, res) => {
 
 router.get('/user', authHelpers.ensureAuthenticated, (req, res) => {
   const username = req.username;
-  //newrelic.addCustomAttribute('ar_username', username);
   res.status(200).json({
     status: 'success',
     user: req.user,
