@@ -1,4 +1,4 @@
-const newrelic = require('newrelic');
+// const newrelic = require('newrelic');
 const express = require('express');
 
 const queries = require('../db/queries.js');
@@ -18,8 +18,7 @@ router.get('/user', authHelpers.ensureAuthenticated, (req, res, next) => {
   const username = req.username;
   return queries.getSavedMovies(parseInt(req.user, 10))
   .then((movies) => {
-    //newrelic.addCustomAttribute('ar_username', username);
-    //newrelic.addCustomAttribute('ar_collection_count', movies.length);
+    // newrelic.addCustomAttribute('ar_collection_count', movies.length);
     res.json({
       status: 'success',
       data: movies,
@@ -41,8 +40,7 @@ router.post('/', authHelpers.ensureAuthenticated, (req, res, next) => {
   req.body.user_id = req.user;
   return queries.addMovie(req.body)
   .then(() => {
-    //newrelic.addCustomAttribute('ar_username', username);
-    newrelic.recordCustomEvent('MoviesCatalog', {'ar_username': username, 'ar_title': title});
+    // newrelic.recordCustomEvent('MoviesCatalog', {'ar_username': username, 'ar_title': title});
     res.json({
       status: 'success',
       data: 'Movie Added!',
