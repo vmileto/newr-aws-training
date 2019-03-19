@@ -1,4 +1,4 @@
-// const newrelic = require('newrelic');
+const newrelic = require('newrelic');
 const bcrypt = require('bcryptjs');
 const knex = require('../db/connection');
 const localAuth = require('./local');
@@ -42,7 +42,7 @@ function ensureAuthenticated(req, res, next) {
     .then((user) => {
       req.user = user.id;
       req.username = user.username;
-      // newrelic.addCustomAttribute('ar_username', user.username);
+      newrelic.addCustomAttribute('ar_username', user.username);
       return next();
     })
     .catch(() => {
