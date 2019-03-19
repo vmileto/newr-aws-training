@@ -20,7 +20,7 @@ spec:
           value: localhost:3004
         - name: REACT_APP_USERS_SERVICE_URL
           value: localhost:3002
-        image: thywoof/web-service:latest
+        image: victormileto/web-service:latest
         name: web-service
         ports:
         - containerPort: 3000

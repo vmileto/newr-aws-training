@@ -20,7 +20,7 @@ spec:
           value: postgres
         - name: POSTGRES_USER
           value: postgres
-        image: thywoof/users-db:latest
+        image: victormileto/users-db:latest
         name: users-db
         ports:
         - containerPort: 5432

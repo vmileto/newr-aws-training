@@ -20,7 +20,7 @@ spec:
           value: postgres
         - name: POSTGRES_USER
           value: postgres
-        image: thywoof/movies-db:latest
+        image: victormileto/movies-db:latest
         name: movies-db
         ports:
         - containerPort: 5432
