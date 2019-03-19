@@ -8,7 +8,7 @@ const routes = require('./routes/movies');
 
 const app = express();
 
-/*
+
 var CUSTOM_PARAMETERS = {
     'nodeName': process.env.K8S_NODE_NAME,
     'nodeIP': process.env.K8S_HOST_IP,
@@ -17,13 +17,13 @@ var CUSTOM_PARAMETERS = {
     'namespace': process.env.K8S_POD_NAMESPACE,
     'namespaceName': process.env.K8S_POD_NAMESPACE
 };
-*/
+
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  // newrelic.addCustomAttributes(CUSTOM_PARAMETERS);
+  newrelic.addCustomAttributes(CUSTOM_PARAMETERS);
   next();
 });
 
